@@ -1,0 +1,55 @@
+1. Booking Trends Over Time:
+sql
+SELECT DATE_FORMAT(CAST(Check_In_Date AS DATE), '%Y-%m') AS booking_month, COUNT(*) AS monthly_bookings
+FROM Bookings
+GROUP BY DATE_FORMAT(CAST(Check_In_Date AS DATE), '%Y-%m')
+ORDER BY booking_month;
+
+2. Hotel Ratings Analysis:
+SELECT Hotel_ID, AVG(`Customer Ratings`) AS avg_rating
+FROM Bookings
+GROUP BY Hotel_ID
+ORDER BY avg_rating DESC;
+
+3. Popular Room Categories:
+SELECT Room_type, COUNT(*) AS bookings_count
+FROM Bookings
+GROUP BY Room_type
+ORDER BY bookings_count DESC;
+
+
+4.Loyalty Program Analysis:
+SELECT Loyalty_Program_Status, COUNT(*) AS loyalty_customers
+FROM Customers
+GROUP BY Loyalty_Program_Status;
+
+
+5. Customer Contact Information:
+SELECT c.Name, c.Contact_Info
+FROM Customers c
+JOIN Bookings b ON c.Customer_ID = b.Customer_ID
+GROUP BY c.Customer_ID
+HAVING COUNT(*) > 1;
+
+6. Peak Booking Days:
+SELECT DAYNAME(CAST(Check_In_Date AS DATE)) AS booking_day, COUNT(*) AS daily_bookings
+FROM Bookings
+GROUP BY booking_day
+ORDER BY daily_bookings DESC;
+
+
+7. Most Loyal Customers:
+SELECT c.Name, c.Loyalty_Program_Status, COUNT(*) AS num_bookings
+FROM Customers c
+JOIN Bookings b ON c.Customer_ID = b.Customer_ID
+GROUP BY c.Customer_ID
+ORDER BY num_bookings DESC
+LIMIT 5;
+
+8. City with the Most Number of Bookings:
+SELECT Location_City, COUNT(*) AS num_bookings
+FROM Hotels h
+JOIN Bookings b ON h.Hotel_ID = b.Hotel_ID
+GROUP BY Location_City
+ORDER BY num_bookings DESC
+LIMIT 1;
